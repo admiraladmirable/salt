@@ -373,7 +373,8 @@ def install(name,
             force_x86=False,
             package_args=None,
             allow_multiple=False,
-            execution_timeout=None):
+            execution_timeout=None,
+            ignore_checksum=False):
     '''
     Instructs Chocolatey to install a package.
 
@@ -435,6 +436,10 @@ def install(name,
 
             .. versionadded:: 2018.3.0
 
+        ignore_checksum (bool):
+            Ignore checksum(s) provided by the package. Overrides
+            the default feature 'checksumFiles' set to 'True'
+
     Returns:
         str: The output of the ``chocolatey`` command
 
@@ -475,6 +480,8 @@ def install(name,
         cmd.append('--allow-multiple')
     if execution_timeout:
         cmd.extend(['--execution-timeout', execution_timeout])
+    if ignore_checksum:
+        cmd.append('--ignorechecksum')
 
     # Salt doesn't need to see the progress
     cmd.extend(_no_progress(__context__))
@@ -752,7 +759,8 @@ def upgrade(name,
             install_args=None,
             override_args=False,
             force_x86=False,
-            package_args=None):
+            package_args=None,
+            ignore_checksum=False):
     '''
     .. versionadded:: 2016.3.4
 
@@ -795,6 +803,10 @@ def upgrade(name,
         package_args
             A list of arguments you want to pass to the package
 
+        ignore_checksum (bool):
+            Ignore checksum(s) provided by the package. Overrides
+            the default feature 'checksumFiles' set to 'True'
+
     Returns:
         str: Results of the ``chocolatey`` command
 
@@ -824,6 +836,8 @@ def upgrade(name,
         cmd.append('--forcex86')
     if package_args:
         cmd.extend(['--packageparameters', package_args])
+    if ignore_checksum:
+        cmd.append('--ignorechecksum')
 
     # Salt doesn't need to see the progress
     cmd.extend(_no_progress(__context__))

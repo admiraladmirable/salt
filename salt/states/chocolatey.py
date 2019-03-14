@@ -29,7 +29,8 @@ def __virtual__():
 
 def installed(name, version=None, source=None, force=False, pre_versions=False,
               install_args=None, override_args=False, force_x86=False,
-              package_args=None, allow_multiple=False, execution_timeout=None):
+              package_args=None, allow_multiple=False, execution_timeout=None,
+              ignore_checksum=False):
     '''
     Installs a package if not already installed
 
@@ -79,6 +80,10 @@ def installed(name, version=None, source=None, force=False, pre_versions=False,
         execution_timeout (str):
             Chocolatey execution timeout value you want to pass to the
             installation process. Default is None.
+
+        ignore_checksum (bool):
+            Ignore checksum(s) provided by the package. Overrides
+            the default feature 'checksumFiles' set to 'True'. Default is False
 
     .. code-block:: yaml
 
@@ -181,7 +186,8 @@ def installed(name, version=None, source=None, force=False, pre_versions=False,
                                             force_x86=force_x86,
                                             package_args=package_args,
                                             allow_multiple=allow_multiple,
-                                            execution_timeout=execution_timeout)
+                                            execution_timeout=execution_timeout
+                                            ignore_checksum=ignore_checksum)
 
     if 'Running chocolatey failed' not in result:
         ret['result'] = True
@@ -286,7 +292,8 @@ def upgraded(name,
              install_args=None,
              override_args=False,
              force_x86=False,
-             package_args=None):
+             package_args=None,
+             ignore_checksum=False):
     '''
     Upgrades a package. Will install the package if not installed.
 
@@ -329,6 +336,10 @@ def upgraded(name,
 
         package_args (str):
             Arguments you want to pass to the package. Default is ``None``.
+
+        ignore_checksum (bool):
+            Ignore checksum(s) provided by the package. Overrides
+            the default feature 'checksumFiles' set to 'True'. Default is ``False``
 
     .. code-block:: yaml
 
@@ -426,7 +437,8 @@ def upgraded(name,
                                             install_args=install_args,
                                             override_args=override_args,
                                             force_x86=force_x86,
-                                            package_args=package_args)
+                                            package_args=package_args,
+                                            ignore_checksum=ignore_checksum)
 
     if 'Running chocolatey failed' not in result:
         ret['comment'] = 'Package {0} upgraded successfully'.format(name)
